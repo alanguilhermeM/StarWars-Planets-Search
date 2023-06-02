@@ -31,12 +31,14 @@ export default function Table() {
       <div>
         <Filter state={ state } />
         <br />
-        <input
-          data-testid="name-filter"
-          value={ search }
-          onChange={ ({ target }) => setSearch(target.value) }
-          placeholder="Busque pelo Planeta"
-        />
+        <fieldset>
+          <input
+            data-testid="name-filter"
+            value={ search }
+            onChange={ ({ target }) => setSearch(target.value) }
+            placeholder="Busque pelo Planeta"
+          />
+        </fieldset>
         <table>
           <thead>
             <tr>

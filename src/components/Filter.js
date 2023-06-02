@@ -8,18 +8,22 @@ export default function Filter({ state }) {
     comparison: 'maior que',
     number: 0,
   });
-  //   const [filtered, setFiltered] = useState(false);
   const { setFilteredState } = useContext(filteredContext);
+  const [countFilters, setCountFilters] = useState([]);
 
   function handleChange({ target }) {
     const { name, value } = target;
     setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
   }
 
-  function handleFilter() {
-    const { column, comparison, number } = filter;
-    const filtrado = state.filter((planet) => {
+  function handleFilters() {
+    const updatedFilters = [...countFilters, filter];
+    setCountFilters(updatedFilters);
+
+    const filtrado = state.filter((planet) => updatedFilters.every((condicao) => {
+      const { column, comparison, number } = condicao;
       const columnValue = planet[column];
+
       switch (comparison) {
       case 'maior que':
         return columnValue > Number(number);
@@ -28,50 +32,68 @@ export default function Filter({ state }) {
       default:
         return parseFloat(columnValue) === Number(number);
       }
-    });
+    }));
+
     setFilteredState([filtrado, true]);
+    setFilter({
+      column: 'population',
+      comparison: 'maior que',
+      number: 0,
+    });
   }
 
   return (
     <div>
-      <label htmlFor="column">
-        Coluna
-        <select
-          data-testid="column-filter"
-          name="column"
-          onChange={ handleChange }
-          value={ filter.column }
-        >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
-        </select>
-      </label>
-      <label htmlFor="comparison">
-        Operador
-        <select
-          data-testid="comparison-filter"
-          name="comparison"
-          value={ filter.comparison }
-          onChange={ handleChange }
-        >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
-        </select>
-      </label>
-      <label>
-        <input
-          type="number"
-          data-testid="value-filter"
-          name="number"
-          value={ filter.number }
-          onChange={ handleChange }
-        />
-      </label>
-      <button data-testid="button-filter" onClick={ handleFilter }>FILTRAR</button>
+      <fieldset>
+        <label htmlFor="column">
+          Coluna
+          <select
+            data-testid="column-filter"
+            name="column"
+            onChange={ handleChange }
+            value={ filter.column }
+          >
+            <option value="population">population</option>
+            <option value="orbital_period">orbital_period</option>
+            <option value="diameter">diameter</option>
+            <option value="rotation_period">rotation_period</option>
+            <option value="surface_water">surface_water</option>
+          </select>
+        </label>
+        <label htmlFor="comparison">
+          Operador
+          <select
+            data-testid="comparison-filter"
+            name="comparison"
+            value={ filter.comparison }
+            onChange={ handleChange }
+          >
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
+          </select>
+        </label>
+        <label>
+          <input
+            type="number"
+            data-testid="value-filter"
+            name="number"
+            value={ filter.number }
+            onChange={ handleChange }
+          />
+        </label>
+        <button data-testid="button-filter" onClick={ handleFilters }>FILTRAR</button>
+      </fieldset>
+      {countFilters.map((filtro) => (
+        <div key={ Math.random() }>
+          <span>{ filtro.column }</span>
+          {' '}
+          <span>{ filtro.comparison }</span>
+          {' '}
+          <span>{ filtro.number }</span>
+          {' '}
+        </div>
+      ))}
     </div>
   );
 }
