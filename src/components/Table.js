@@ -12,7 +12,6 @@ export default function Table() {
   useEffect(() => {
     async function fetchData() {
       const result = await fetchApi('https://swapi.dev/api/planets');
-      setLoading(false);
       setState(result);
     }
     fetchData();
