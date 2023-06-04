@@ -13,6 +13,7 @@ export default function Table() {
   useEffect(() => {
     async function fetchData() {
       const result = await fetchApi('https://swapi.dev/api/planets');
+      console.log(result);
       setLoading(false);
       setState(result);
     }
@@ -27,75 +28,73 @@ export default function Table() {
     ? filteredState[0].filter((planet) => planet.name.toLowerCase().includes(lowerSearch))
     : [];
   return (
-    loading ? <h1>Carregando...</h1> : (
-      <div>
-        <Filter state={ state } />
-        <br />
-        <fieldset>
-          <input
-            data-testid="name-filter"
-            value={ search }
-            onChange={ ({ target }) => setSearch(target.value) }
-            placeholder="Busque pelo Planeta"
-          />
-        </fieldset>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Rotation Period</th>
-              <th>Orbital Period</th>
-              <th>Diameter</th>
-              <th>Climate</th>
-              <th>Gravity</th>
-              <th>Terrain</th>
-              <th>Surface Water</th>
-              <th>Population</th>
-              <th>Films</th>
-              <th>Created</th>
-              <th>Edited</th>
-              <th>Url</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredState[1]
-              ? filtredState2.map((planet) => (
-                <tr key={ planet.name }>
-                  <td>{planet.name}</td>
-                  <td>{planet.rotation_period}</td>
-                  <td>{planet.orbital_period}</td>
-                  <td>{planet.diameter}</td>
-                  <td>{planet.climate}</td>
-                  <td>{planet.gravity}</td>
-                  <td>{planet.terrain}</td>
-                  <td>{planet.surface_water}</td>
-                  <td>{planet.population}</td>
-                  <td>{planet.films}</td>
-                  <td>{planet.created}</td>
-                  <td>{planet.edited}</td>
-                  <td>{planet.url}</td>
-                </tr>
-              ))
-              : filtredState.map((planet) => (
-                <tr key={ planet.name }>
-                  <td>{planet.name}</td>
-                  <td>{planet.rotation_period}</td>
-                  <td>{planet.orbital_period}</td>
-                  <td>{planet.diameter}</td>
-                  <td>{planet.climate}</td>
-                  <td>{planet.gravity}</td>
-                  <td>{planet.terrain}</td>
-                  <td>{planet.surface_water}</td>
-                  <td>{planet.population}</td>
-                  <td>{planet.films}</td>
-                  <td>{planet.created}</td>
-                  <td>{planet.edited}</td>
-                  <td>{planet.url}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-    )
+    <div>
+      <Filter state={ state } />
+      <br />
+      <fieldset>
+        <input
+          data-testid="name-filter"
+          value={ search }
+          onChange={ ({ target }) => setSearch(target.value) }
+          placeholder="Busque pelo Planeta"
+        />
+      </fieldset>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Rotation Period</th>
+            <th>Orbital Period</th>
+            <th>Diameter</th>
+            <th>Climate</th>
+            <th>Gravity</th>
+            <th>Terrain</th>
+            <th>Surface Water</th>
+            <th>Population</th>
+            <th>Films</th>
+            <th>Created</th>
+            <th>Edited</th>
+            <th>Url</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredState[1]
+            ? filtredState2.map((planet) => (
+              <tr key={ planet.name }>
+                <td>{planet.name}</td>
+                <td>{planet.rotation_period}</td>
+                <td>{planet.orbital_period}</td>
+                <td>{planet.diameter}</td>
+                <td>{planet.climate}</td>
+                <td>{planet.gravity}</td>
+                <td>{planet.terrain}</td>
+                <td>{planet.surface_water}</td>
+                <td>{planet.population}</td>
+                <td>{planet.films}</td>
+                <td>{planet.created}</td>
+                <td>{planet.edited}</td>
+                <td>{planet.url}</td>
+              </tr>
+            ))
+            : filtredState.map((planet) => (
+              <tr key={ planet.name }>
+                <td>{planet.name}</td>
+                <td>{planet.rotation_period}</td>
+                <td>{planet.orbital_period}</td>
+                <td>{planet.diameter}</td>
+                <td>{planet.climate}</td>
+                <td>{planet.gravity}</td>
+                <td>{planet.terrain}</td>
+                <td>{planet.surface_water}</td>
+                <td>{planet.population}</td>
+                <td>{planet.films}</td>
+                <td>{planet.created}</td>
+                <td>{planet.edited}</td>
+                <td>{planet.url}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

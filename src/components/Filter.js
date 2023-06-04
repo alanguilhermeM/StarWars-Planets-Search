@@ -19,7 +19,7 @@ export default function Filter({ state }) {
   function handleFilters() {
     const updatedFilters = [...countFilters, filter];
     setCountFilters(updatedFilters);
-
+    console.log(updatedFilters);
     const filtrado = state.filter((planet) => updatedFilters.every((condicao) => {
       const { column, comparison, number } = condicao;
       const columnValue = planet[column];
@@ -42,6 +42,8 @@ export default function Filter({ state }) {
     });
   }
 
+  const handleColumn = (column) => !countFilters.find((opcao) => column === opcao.column);
+
   return (
     <div>
       <fieldset>
@@ -53,11 +55,18 @@ export default function Filter({ state }) {
             onChange={ handleChange }
             value={ filter.column }
           >
-            <option value="population">population</option>
+            {['population', 'orbital_period', 'diameter', 'rotation_period',
+              'surface_water'].filter(handleColumn)
+              .map((column) => (
+                <option key={ column } value={ column }>
+                  {column}
+                </option>
+              ))}
+            {/* <option value="population">population</option>
             <option value="orbital_period">orbital_period</option>
             <option value="diameter">diameter</option>
             <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            <option value="surface_water">surface_water</option> */}
           </select>
         </label>
         <label htmlFor="comparison">
@@ -85,7 +94,7 @@ export default function Filter({ state }) {
         <button data-testid="button-filter" onClick={ handleFilters }>FILTRAR</button>
       </fieldset>
       {countFilters.map((filtro) => (
-        <div key={ Math.random() }>
+        <div key={ Math.random() } data-testid="filtro">
           <span>{ filtro.column }</span>
           {' '}
           <span>{ filtro.comparison }</span>
