@@ -5,7 +5,6 @@ import filteredContext from '../context/filteredContext';
 
 export default function Table() {
   const { fetchApi } = useContext(context);
-  const [loading, setLoading] = useState(true);
   const [state, setState] = useState([]);
   const [search, setSearch] = useState('');
   const { filteredState } = useContext(filteredContext);
@@ -13,7 +12,6 @@ export default function Table() {
   useEffect(() => {
     async function fetchData() {
       const result = await fetchApi('https://swapi.dev/api/planets');
-      console.log(result);
       setLoading(false);
       setState(result);
     }
