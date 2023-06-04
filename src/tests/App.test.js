@@ -33,7 +33,7 @@ describe('testes', () => {
     userEvent.type(numeroInput, 0);
     userEvent.click(btnFiltrar);
 
-    const filtro = screen.getByTestId('filtro');
+    const filtro = screen.getByTestId('filter');
     expect(filtro).toBeInTheDocument()
     // expect(screen.queryByRole('heading', { name: /carregando\.\.\./i })).not.toBeInTheDocument();
     // screen.getByRole('button', { name: /filtrar/i });

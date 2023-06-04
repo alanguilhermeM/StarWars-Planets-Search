@@ -10,6 +10,8 @@ export default function Filter({ state }) {
   });
   const { setFilteredState } = useContext(filteredContext);
   const [countFilters, setCountFilters] = useState([]);
+  const [filtros, setFiltros] = useState([]);
+  console.log(countFilters);
 
   function handleChange({ target }) {
     const { name, value } = target;
@@ -17,9 +19,9 @@ export default function Filter({ state }) {
   }
 
   function handleFilters() {
-    const updatedFilters = [...countFilters, filter];
+    const updatedFilters = [...filtros, filter];
+    setFiltros(updatedFilters);
     setCountFilters(updatedFilters);
-    console.log(updatedFilters);
     const filtrado = state.filter((planet) => updatedFilters.every((condicao) => {
       const { column, comparison, number } = condicao;
       const columnValue = planet[column];
@@ -42,7 +44,36 @@ export default function Filter({ state }) {
     });
   }
 
-  const handleColumn = (column) => !countFilters.find((opcao) => column === opcao.column);
+  const handleColumn = (column) => !filtros.find((opcao) => column === opcao.column);
+  const removeFilter = (filtro) => {
+    const filtroAtualizado = filtros.filter((opcao) => opcao !== filtro);
+    setFiltros(filtroAtualizado);
+    if (filtroAtualizado.length === 0) {
+      setFilteredState([state, false]); // Redefinir a tabela original
+    } else {
+      const filtrado = state.filter((planet) => filtroAtualizado.every((condicao) => {
+        const { column, comparison, number } = condicao;
+        const columnValue = planet[column];
+
+        switch (comparison) {
+        case 'maior que':
+          return columnValue > Number(number);
+        case 'menor que':
+          return columnValue < Number(number);
+        default:
+          return parseFloat(columnValue) === Number(number);
+        }
+      }));
+
+      setFilteredState([filtrado, true]);
+    }
+  };
+
+  const handleRemoveFilters = () => {
+    setCountFilters([]);
+    setFiltros([]);
+    setFilteredState([state, false]);
+  };
 
   return (
     <div>
@@ -62,11 +93,6 @@ export default function Filter({ state }) {
                   {column}
                 </option>
               ))}
-            {/* <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option> */}
           </select>
         </label>
         <label htmlFor="comparison">
@@ -92,15 +118,23 @@ export default function Filter({ state }) {
           />
         </label>
         <button data-testid="button-filter" onClick={ handleFilters }>FILTRAR</button>
+        <button
+          onClick={ handleRemoveFilters }
+          data-testid="button-remove-filters"
+        >
+          Remover todas filtragens
+
+        </button>
       </fieldset>
-      {countFilters.map((filtro) => (
-        <div key={ Math.random() } data-testid="filtro">
+      {filtros.map((filtro) => (
+        <div key={ Math.random() } data-testid="filter">
           <span>{ filtro.column }</span>
           {' '}
           <span>{ filtro.comparison }</span>
           {' '}
           <span>{ filtro.number }</span>
           {' '}
+          <button onClick={ () => removeFilter(filtro) }>X</button>
         </div>
       ))}
     </div>
