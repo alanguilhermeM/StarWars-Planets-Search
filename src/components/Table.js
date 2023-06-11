@@ -57,7 +57,7 @@ export default function Table() {
         <tbody>
           {filteredState[1]
             ? filtredState2.map((planet) => (
-              <tr key={ planet.name }>
+              <tr key={ planet.name } data-testid="tabela">
                 <td>{planet.name}</td>
                 <td>{planet.rotation_period}</td>
                 <td>{planet.orbital_period}</td>
@@ -74,7 +74,7 @@ export default function Table() {
               </tr>
             ))
             : filtredState.map((planet) => (
-              <tr key={ planet.name }>
+              <tr key={ planet.name } data-testid={ planet.name }>
                 <td>{planet.name}</td>
                 <td>{planet.rotation_period}</td>
                 <td>{planet.orbital_period}</td>

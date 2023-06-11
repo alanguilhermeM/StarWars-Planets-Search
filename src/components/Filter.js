@@ -128,12 +128,13 @@ export default function Filter({ state }) {
       </fieldset>
       {filtros.map((filtro) => (
         <div key={ Math.random() } data-testid="filter">
-          <span>{ filtro.column }</span>
-          {' '}
-          <span>{ filtro.comparison }</span>
-          {' '}
-          <span>{ filtro.number }</span>
-          {' '}
+          <span>
+            {filtro.column}
+            {' '}
+            {filtro.comparison}
+            {' '}
+            {filtro.number}
+          </span>
           <button onClick={ () => removeFilter(filtro) }>X</button>
         </div>
       ))}
